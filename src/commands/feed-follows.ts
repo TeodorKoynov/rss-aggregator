@@ -1,6 +1,6 @@
 import { getFeedByURL } from "src/lib/db/queries/feeds";
 import {
-    createFeedFollow,
+    createFeedFollow, deleteFeedFollow,
     getFeedFollowsForUser,
 } from "../lib/db/queries/feed-follows";
 import {User} from "../lib/db/schema";
@@ -38,4 +38,23 @@ export async function handlerListFeedFollows(cmdName: string, user: User) {
 export function printFeedFollow(username: string, feedName: string) {
     console.log(`* User:          ${username}`);
     console.log(`* Feed:          ${feedName}`);
+}
+
+export async function handlerUnfollow(cmdName: string, user: User, ...args: string[]) {
+    if (args.length !== 1) {
+        throw new Error(`usage: ${cmdName} <feed_url>`);
+    }
+
+    const feedURL = args[0];
+    const feed = await getFeedByURL(feedURL);
+    if (!feed) {
+        throw new Error(`Feed not found: ${feedURL}`);
+    }
+
+    const result = await deleteFeedFollow(user.id, feed.id);
+    if (!result) {
+        throw new Error(`Failed to unfollow feed: ${feedURL}`);
+    }
+
+    console.log(`%s unfollowed successfully!`, feed.name);
 }
