@@ -10,7 +10,7 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
     const user = await getUserByName(userName)
 
     if (!user) {
-        throw new Error(`User does not exist!`);
+        throw new Error(`User ${userName} not found`);
     }
 
     setUser(user.name)
