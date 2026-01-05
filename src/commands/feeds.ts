@@ -1,33 +1,25 @@
-import {readConfig} from "../config";
-import {getUserById, getUserByName, getUsers} from "../lib/db/queries/users";
+import {getUserById} from "../lib/db/queries/users";
 import {createFeed, getFeeds} from "../lib/db/queries/feeds";
 import {Feed, User} from "../lib/db/schema";
 import {createFeedFollow} from "../lib/db/queries/feed-follows";
 import {printFeedFollow} from "./feed-follows";
 
-export async function handlerAddFeed(cmdName: string, ...args: string[])  {
+export async function handlerAddFeed(cmdName: string, user: User, ...args: string[])  {
     if (args.length !== 2) {
         throw new Error(`usage: ${cmdName} <feed_name> <url>`);
     }
     const [feedName, url] = args
 
-    const config = readConfig();
-
-    const currentUser = await getUserByName(config.currentUserName)
-    if (!currentUser) {
-        throw new Error("You need to be logged in to add a feed.")
-    }
-
-    const feed = await createFeed(feedName, url, currentUser.id)
+    const feed = await createFeed(feedName, url, user.id)
     if (!feed) {
         throw new Error(`Failed to create feed`);
     }
 
-    const feedFollow = await createFeedFollow(currentUser.id, feed.id);
-    printFeedFollow(currentUser.name, feedFollow.feedName)
+    const feedFollow = await createFeedFollow(user.id, feed.id);
+    printFeedFollow(user.name, feedFollow.feedName)
 
     console.log("Feed created successfully:")
-    printFeed(feed, currentUser)
+    printFeed(feed, user)
 }
 
 export async function handleListFeeds(cmdName: string) {
