@@ -7,6 +7,12 @@ export async function createUser(name: string) {
     return result;
 }
 
+export async function getUserById(id: string) {
+    return await db.query.users.findFirst({
+        where: eq(users.id, id)
+    })
+}
+
 export async function getUserByName(name: string) {
     return await db.query.users.findFirst({
         where: eq(users.name, name)
