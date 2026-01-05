@@ -21,7 +21,8 @@ export function readConfig() {
 }
 
 function getConfigFilePath(): string {
-    const paths = [os.homedir(), 'dev', 'bootdev', 'rss-aggregator', ".gatorconfig.json"]
+    // const paths = [os.homedir(), 'dev', 'bootdev', 'rss-aggregator', ".gatorconfig.json"]
+    const paths = [os.homedir(), ".gatorconfig.json"]
     return path.join(...paths)
 }
 
