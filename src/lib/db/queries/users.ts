@@ -12,3 +12,7 @@ export async function getUserByName(name: string) {
         where: eq(users.name, name)
     })
 }
+
+export async function deleteUsers() {
+    await db.delete(users)
+}
