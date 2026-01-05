@@ -52,14 +52,10 @@ async function scrapeFeed(feed: Feed) {
     for (let item of feedData.channel.item) {
         console.log(`Found post: %s`, item.title);
 
-        const now = new Date();
-
         await createPost({
             url: item.link,
             feedId: feed.id,
             title: item.title,
-            createdAt: now,
-            updatedAt: now,
             description: item.description,
             publishedAt: new Date(item.pubDate),
         } satisfies NewPost);
