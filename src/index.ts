@@ -1,7 +1,7 @@
 import {CommandsRegistry, registerCommand, runCommand} from "./commands";
 import {handlerLogin} from "./commands/users";
 
-function main() {
+async function main() {
     const args = process.argv.slice(2);
 
     if (args.length < 1) {
@@ -16,7 +16,7 @@ function main() {
     registerCommand(registry, cmdName, handlerLogin)
 
     try {
-        runCommand(registry, cmdName, ...cmdArgs);
+        await runCommand(registry, cmdName, ...cmdArgs);
     } catch (err) {
         if (err instanceof Error) {
             console.error(`Error running command ${cmdName}: ${err.message}`);
@@ -25,6 +25,7 @@ function main() {
         }
         process.exit(1);
     }
+    process.exit(0)
 }
 
 main();
