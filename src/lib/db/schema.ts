@@ -9,5 +9,3 @@ export const users = pgTable("users", {
         .$onUpdate(() => new Date()),
     name: text("name").notNull().unique(),
 })
-
-// postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
